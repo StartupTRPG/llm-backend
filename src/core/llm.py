@@ -21,6 +21,7 @@ def get_llm_response(
     max_retries: int = 5,
     retry_delay: float = 0.5,
 ):    
+
     # 프롬프트 템플릿 생성
     if response_format:
         format_instructions = f"""
