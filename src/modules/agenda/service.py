@@ -12,7 +12,7 @@ def create_agenda(request: CreateAgendaRequest) -> CreateAgendaResponse:
     player_context_list_str = ""
     for player in request.player_context_list:
         player_context_str = "\n".join([f"Day: {key} - Context: {value}" for key, value in player.context.items()])
-        player_context_list_str += f"player_id: {player['id']}, player_name: {player['name']}, player_role: {player['role']}, player_context: ({player_context_str})\n"
+        player_context_list_str += f"player_id: {player.id}, player_name: {player.name}, player_role: {player.role}, player_context: ({player_context_str})\n"
     
     response = get_llm_response(
         prompt_str=prompt_str,

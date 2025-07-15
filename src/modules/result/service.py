@@ -14,7 +14,7 @@ def calculate_result(request: ResultRequest) -> ResultResponse:
     player_context_list_str = ""
     for player in request.player_context_list:
         player_context_str = "\n".join([f"Day {key}: {value}" for key, value in player.get("context", {}).items()])
-        player_context_list_str += f"player_id: {player['id']}, player_name: {player['name']}, player_role: {player['role']}, player_context: ({player_context_str})\n"
+        player_context_list_str += f"player_id: {player.id}, player_name: {player.name}, player_role: {player.role}, player_context: ({player_context_str})\n"
     
     # 프롬프트 템플릿 가져오기
     prompt_str = _get_prompt_template()
