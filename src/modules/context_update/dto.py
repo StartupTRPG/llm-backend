@@ -1,5 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel
+from typing import Dict, List, Any
 
 class PlayerContext(BaseModel):
     id: str
@@ -51,9 +52,9 @@ class UpdateContextRequest(BaseModel):
     company_context: dict[str, str] # key: 일자, value: 회사 상태 설명
     player_context_list: list[PlayerContext]
     
-    agenda_list: list[Agenda]
-    task_list: dict[str, list[Task]]
-    overtime_task_list: dict[str, list[OvertimeTask]]
+    agenda_list: list[Dict[str, Any]]  # 딕셔너리 형태로 받음
+    task_list: dict[str, list[Dict[str, Any]]]  # 딕셔너리 형태로 받음
+    overtime_task_list: dict[str, list[Dict[str, Any]]]  # 딕셔너리 형태로 받음
 
 # 플레이어 선택에 따라 회사 상태 설명, 플레이어 상태 설명, 안건, 업무, 야근 업무 조정
 class UpdateContextResponse(BaseModel):

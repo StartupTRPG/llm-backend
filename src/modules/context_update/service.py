@@ -14,14 +14,59 @@ def update_context(request: UpdateContextRequest) -> UpdateContextResponse:
         player_context_str = "\n".join([f"Day: {key} - Context: {value}" for key, value in player.context.items()])
         player_context_list_str += f"player_id: {player.id}, player_name: {player.name}, player_role: {player.role}, player_context: ({player_context_str})\n"
     
+    # agenda_list를 딕셔너리로 처리
+    agenda_list_str = ""
+    for agenda in request.agenda_list:
+        agenda_id = agenda.get('id', '')
+        agenda_name = agenda.get('name', '')
+        agenda_description = agenda.get('description', '')
+        selected_options = agenda.get('selected_options', {})
+        
+        selected_texts = []
+        for option in selected_options.values():
+            if isinstance(option, dict):
+                selected_texts.append(option.get('text', ''))
+            else:
+                selected_texts.append(option.text if hasattr(option, 'text') else '')
+        
+        agenda_list_str += f"{agenda_id}: {agenda_name} ({agenda_description})"
+        if selected_texts:
+            agenda_list_str += f" - 선택: {', '.join(selected_texts)}"
+        agenda_list_str += "\n"
     
-    agenda_list_str = "\n".join([f"{agenda.id}: {agenda.name} ({agenda.description})" + (f" - 선택: {', '.join([option.text for option in agenda.selected_options.values()])}" if agenda.selected_options else "") for agenda in request.agenda_list])
+    # task_list를 딕셔너리로 처리
+    task_list_str = ""
+    for player_id, task_list in request.task_list.items():
+        for task in task_list:
+            task_id = task.get('id', '')
+            task_name = task.get('name', '')
+            task_description = task.get('description', '')
+            selected_option = task.get('selected_option')
+            
+            task_list_str += f"{task_id}: {task_name} ({task_description})"
+            if selected_option:
+                if isinstance(selected_option, dict):
+                    task_list_str += f" - 선택: {selected_option.get('text', '')}"
+                else:
+                    task_list_str += f" - 선택: {selected_option.text if hasattr(selected_option, 'text') else ''}"
+            task_list_str += "\n"
     
-    # task_list는 dict[str, list[Task]] 형태이므로 각 리스트의 Task들을 처리
-    task_list_str = "\n".join([f"{task.id}: {task.name} ({task.description})" + (f" - 선택: {task.selected_option.text}" if task.selected_option else "") for task_list in request.task_list.values() for task in task_list])
-    
-    # overtime_task_list는 dict[str, list[OvertimeTask]] 형태이므로 각 리스트의 OvertimeTask들을 처리
-    overtime_task_list_str = "\n".join([f"{overtime_task.id}: {overtime_task.name} ({overtime_task.description})" + (f" - 선택: {overtime_task.selected_option.text}" if overtime_task.selected_option else "") for task_list in request.overtime_task_list.values() for overtime_task in task_list])
+    # overtime_task_list를 딕셔너리로 처리
+    overtime_task_list_str = ""
+    for player_id, overtime_task_list in request.overtime_task_list.items():
+        for overtime_task in overtime_task_list:
+            overtime_task_id = overtime_task.get('id', '')
+            overtime_task_name = overtime_task.get('name', '')
+            overtime_task_description = overtime_task.get('description', '')
+            selected_option = overtime_task.get('selected_option')
+            
+            overtime_task_list_str += f"{overtime_task_id}: {overtime_task_name} ({overtime_task_description})"
+            if selected_option:
+                if isinstance(selected_option, dict):
+                    overtime_task_list_str += f" - 선택: {selected_option.get('text', '')}"
+                else:
+                    overtime_task_list_str += f" - 선택: {selected_option.text if hasattr(selected_option, 'text') else ''}"
+            overtime_task_list_str += "\n"
     
     # 프롬프트 템플릿 가져오기
     prompt_str = _get_prompt_template()
