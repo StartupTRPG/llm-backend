@@ -28,10 +28,21 @@ logger = logging.getLogger(__name__)
 
 @app.middleware("http")
 async def log_request_middleware(request: Request, call_next):
-    logger.info(f"요청: {request.method} {request.url}")
+    body = await request.body()
+    try:
+        body_str = body.decode("utf-8")
+    except Exception:
+        body_str = str(body)
+    # 요청 바디를 보기 좋게 출력
+    try:
+        import json
+        parsed = json.loads(body_str)
+        pretty_body = json.dumps(parsed, ensure_ascii=False, indent=2)
+    except Exception:
+        pretty_body = body_str
+    logger.info(f"요청: {request.method} {request.url} | Body:\n{pretty_body}")
     response = await call_next(request)
     return response
-
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -17,5 +17,5 @@ class ResultRequest(BaseModel):
     player_context_list: list[dict]
 
 class ResultResponse(BaseModel):
-    game_result: GameResult
-    player_rankings: List[PlayerRanking]
+    game_result: dict
+    player_rankings: List[dict]
