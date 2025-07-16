@@ -12,16 +12,16 @@ class OvertimeTaskType(Enum):
     REST = "rest"
 
 class OvertimeTaskOption(BaseModel):
-    overtime_task_option_id: str
-    overtime_task_option_text: str
-    overtime_task_option_impact_summary: str
+    id: str
+    text: str
+    impact_summary: str
     
 class OvertimeTask(BaseModel):
-    overtime_task_id: str
-    overtime_task_type: OvertimeTaskType
-    overtime_task_name: str
-    overtime_task_description: str
-    overtime_task_options: list[OvertimeTaskOption]
+    id: str
+    type: OvertimeTaskType
+    name: str
+    description: str
+    options: list[OvertimeTaskOption]
     
 class CreateOvertimeRequest(BaseModel):
     company_context: dict[str, str] # key: 일자, value: 회사 상태 설명

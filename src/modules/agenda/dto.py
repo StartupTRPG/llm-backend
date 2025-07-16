@@ -11,15 +11,15 @@ class CreateAgendaRequest(BaseModel):
     player_context_list: list[PlayerContext]
     
 class AgendaOption(BaseModel):
-    agenda_option_id: str
-    agenda_option_text: str
-    agenda_option_impact_summary: str
+    id: str
+    text: str
+    impact_summary: str
     
 class Agenda(BaseModel):
-    agenda_id: str
-    agenda_name: str
-    agenda_description: str
-    agenda_options: list[AgendaOption]
+    id: str
+    name: str
+    description: str
+    options: list[AgendaOption]
     
 class CreateAgendaResponse(BaseModel):
     description: str

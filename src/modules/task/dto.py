@@ -7,15 +7,15 @@ class PlayerContext(BaseModel):
     context: dict[str, str] # key: 일자, value: 플레이어 상태 설명
 
 class TaskOption(BaseModel):
-    task_option_id: str
-    task_option_text: str
-    task_option_impact_summary: str
+    id: str
+    text: str
+    impact_summary: str
 
 class Task(BaseModel):
-    task_id: str
-    task_name: str
-    task_description: str
-    task_options: list[TaskOption]
+    id: str
+    name: str
+    description: str
+    options: list[TaskOption]
     
 class CreateTaskRequest(BaseModel):
     company_context: dict[str, str] # key: 일자, value: 회사 상태 설명
